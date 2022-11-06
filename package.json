@@ -1,20 +1,21 @@
 {
   "name": "schel-d-utils",
-  "version": "2.0.0",
+  "version": "2.0.4",
   "description": "A library for code (that is NodeJS/Browser compatible) common to my various NodeJS/web projects.",
-  "main": "index.js",
-  "types": "index.d.js",
+  "main": "dist/cjs/_export.js",
+  "types": "dist/cjs/_export.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./index.js"
+      "import": "./dist/esm/_export.js",
+      "require": "./dist/cjs/_export.js"
     }
   },
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "npm run clean",
-    "build": "tsc --project src/tsconfig.json",
-    "lint": "eslint . & tsc --project src/tsconfig.json --noemit & tsc --project tests/tsconfig.json --noemit",
+    "build": "tsc --project src/tsconfig-cjs.json & tsc --project src/tsconfig-esm.json",
+    "lint": "eslint . & tsc --project src/tsconfig-cjs.json --noemit & tsc --project tests/tsconfig.json --noemit",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "prepare": "npm run build"
