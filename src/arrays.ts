@@ -31,7 +31,14 @@ export function repeat<T>(something: T, amount: number): T[] {
  * @param equalsFunc The function to determine if two items should be considered
  * duplicates.
  */
-export function unique<T>(array: T[], equalsFunc: (a: T, b: T) => boolean): T[] {
+export function unique(array: string[]): string[];
+export function unique(array: number[]): number[];
+export function unique<T>(array: T[], equalsFunc?: (a: T, b: T) => boolean): T[];
+export function unique<T>(array: T[], equalsFunc?: (a: T, b: T) => boolean): T[] {
+  if (equalsFunc == null) {
+    return [...new Set(array)];
+  }
+
   const result: T[] = [];
 
   for (const item of array) {

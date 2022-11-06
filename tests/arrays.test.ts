@@ -14,19 +14,35 @@ test("repeat", () => {
   expect(repeat("pizza", 0)).toStrictEqual([]);
 });
 
-test("unique", () => {
-  const strEquals = (a: string, b: string) => a == b;
+test("unique (custom object)", () => {
+  const obj = (a: string) => { return { x: a }; };
+  const strEquals = (a: { x: string }, b: { x: string }) => a.x == b.x;
 
-  expect(unique(["cat", "dog", "cat", "cat"], strEquals))
-    .toStrictEqual(["cat", "dog"]);
-  expect(unique(["dog", "dog", "cat", "cat"], strEquals))
-    .toStrictEqual(["dog", "cat"]);
-  expect(unique(["rat", "dog", "fat", "cat"], strEquals))
-    .toStrictEqual(["rat", "dog", "fat", "cat"]);
-  expect(unique(["rat", "rat", "rat"], strEquals))
-    .toStrictEqual(["rat"]);
-  expect(unique(["rat"], strEquals))
-    .toStrictEqual(["rat"]);
+  expect(unique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals))
+    .toStrictEqual([obj("cat"), obj("dog")]);
+  expect(unique([obj("dog"), obj("dog"), obj("cat"), obj("cat")], strEquals))
+    .toStrictEqual([obj("dog"), obj("cat")]);
+  expect(unique([obj("rat"), obj("dog"), obj("fat"), obj("cat")], strEquals))
+    .toStrictEqual([obj("rat"), obj("dog"), obj("fat"), obj("cat")]);
+  expect(unique([obj("rat"), obj("rat"), obj("rat")], strEquals))
+    .toStrictEqual([obj("rat")]);
+  expect(unique([obj("rat")], strEquals))
+    .toStrictEqual([obj("rat")]);
   expect(unique([], strEquals))
+    .toStrictEqual([]);
+});
+
+test("unique (primitive string)", () => {
+  expect(unique(["cat", "dog", "cat", "cat"]))
+    .toStrictEqual(["cat", "dog"]);
+  expect(unique(["dog", "dog", "cat", "cat"]))
+    .toStrictEqual(["dog", "cat"]);
+  expect(unique(["rat", "dog", "fat", "cat"]))
+    .toStrictEqual(["rat", "dog", "fat", "cat"]);
+  expect(unique(["rat", "rat", "rat"]))
+    .toStrictEqual(["rat"]);
+  expect(unique(["rat"]))
+    .toStrictEqual(["rat"]);
+  expect(unique([]))
     .toStrictEqual([]);
 });
