@@ -1,4 +1,4 @@
-import { apply } from "../flow";
+import { apply } from "../scope";
 
 /**
  * Creates a div that houses content that updates with an animation.
@@ -19,11 +19,24 @@ export class OdometerController<T> {
   /** The current value being displayed (transformed by {@link _builder} into UI). */
   private _currentValue: T;
 
-  /** The inner div containing the UI for the {@link _currentValue}. */
+  /** The element containing the UI for the {@link _currentValue}. */
   private _in: HTMLElement;
 
-  /** The inner div containing the UI that is animating out (if any). */
+  /** The element containing the UI that is animating out (if any). */
   private _out: HTMLElement | null;
+
+  /** The CSS class for the parent div. */
+  private readonly _parentDivClass: string;
+
+  /**
+   * The CSS class that runs the "in" animation. Note that this class isn't
+   * always applied, since the initial value's UI won't have it if the "animate
+   * start" option is disabled.
+   */
+  private readonly _childInClass: string;
+
+  /** The CSS class that runs the "out" animation. */
+  private readonly _childOutClass: string;
 
   /**
    * Creates the controller, the div, and builds the UI for the initial state.
@@ -36,10 +49,16 @@ export class OdometerController<T> {
    * value.
    */
   constructor(initialValue: T, equals: (a: T, b: T) => boolean,
-    builder: (value: T) => HTMLElement, animateStart = false) {
+    builder: (value: T) => HTMLElement, animateStart = false,
+    parentDivClass = "odometer", childInClass = "odometer-in",
+    childOutClass = "odometer-out") {
+
+    this._parentDivClass = parentDivClass;
+    this._childInClass = childInClass;
+    this._childOutClass = childOutClass;
 
     this.div = apply(document.createElement("div"), div => {
-      div.className = "odometer";
+      div.className = parentDivClass;
     });
 
     this._in = builder(initialValue);
@@ -51,7 +70,7 @@ export class OdometerController<T> {
 
     this.div.append(this._in);
     if (animateStart) {
-      this._in.classList.add("odometer-in");
+      this._in.classList.add(childInClass);
     }
   }
 
@@ -65,11 +84,11 @@ export class OdometerController<T> {
 
     this._out?.remove();
     this._out = this._in;
-    this._out.classList.remove("odometer-in");
-    this._out.classList.add("odometer-out");
+    this._out.classList.remove(this._childInClass);
+    this._out.classList.add(this._childOutClass);
 
     this._in = this._builder(value);
-    this._in.classList.add("odometer-in");
+    this._in.classList.add(this._childInClass);
     this.div.append(this._in);
 
     this._currentValue = value;
