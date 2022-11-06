@@ -1,7 +1,7 @@
 {
   "name": "schel-d-utils",
-  "version": "1.1.0",
-  "description": "A library for code common to my various NodeJS/Browser projects.",
+  "version": "2.0.0",
+  "description": "A library for code (that is NodeJS/Browser compatible) common to my various NodeJS/web projects.",
   "main": "index.js",
   "types": "index.d.js",
   "type": "module",
@@ -31,7 +31,6 @@
   "homepage": "https://github.com/schel-d/schel-d-utils#readme",
   "keywords": [
     "utils",
-    "dom",
     "javascript"
   ],
   "devDependencies": {
