@@ -16,7 +16,7 @@ export function range(start: number, end: number): number[] {
  * @param amount The number of times to include said value.
  */
 export function repeat<T>(something: T, amount: number): T[] {
-  const array = [];
+  const array: T[] = [];
   for (let i = 0; i < amount; i++) {
     array.push(something);
   }
@@ -50,4 +50,19 @@ export function unique<T>(array: T[], equalsFunc?: (a: T, b: T) => boolean): T[]
   }
 
   return result;
+}
+
+/**
+ * Returns true if every element in the array is unique, according to the given
+ * {@link equalsFunc}, which is used to determine if two items should be
+ * considered duplicates.
+ * @param array The array.
+ * @param equalsFunc The function to determine if two items should be considered
+ * duplicates.
+ */
+export function areUnique(array: string[]): boolean;
+export function areUnique(array: number[]): boolean;
+export function areUnique<T>(array: T[], equalsFunc?: (a: T, b: T) => boolean): boolean;
+export function areUnique<T>(array: T[], equalsFunc?: (a: T, b: T) => boolean): boolean {
+  return array.length == unique(array, equalsFunc).length;
 }
