@@ -1,4 +1,4 @@
-import { range, repeat, unique } from "../src/_export";
+import { areUnique, range, repeat, unique } from "../src/_export";
 
 test("range", () => {
   expect(range(0, 4)).toStrictEqual([0, 1, 2, 3]);
@@ -45,4 +45,37 @@ test("unique (primitive string)", () => {
     .toStrictEqual(["rat"]);
   expect(unique([]))
     .toStrictEqual([]);
+});
+
+test("areUnique (custom object)", () => {
+  const obj = (a: string) => { return { x: a }; };
+  const strEquals = (a: { x: string }, b: { x: string }) => a.x == b.x;
+
+  expect(areUnique([obj("cat"), obj("dog"), obj("cat"), obj("cat")], strEquals))
+    .toStrictEqual(false);
+  expect(areUnique([obj("dog"), obj("dog"), obj("cat"), obj("cat")], strEquals))
+    .toStrictEqual(false);
+  expect(areUnique([obj("rat"), obj("dog"), obj("fat"), obj("cat")], strEquals))
+    .toStrictEqual(true);
+  expect(areUnique([obj("rat"), obj("rat"), obj("rat")], strEquals))
+    .toStrictEqual(false);
+  expect(areUnique([obj("rat")], strEquals))
+    .toStrictEqual(true);
+  expect(areUnique([], strEquals))
+    .toStrictEqual(true);
+});
+
+test("areUnique (primitive string)", () => {
+  expect(areUnique(["cat", "dog", "cat", "cat"]))
+    .toStrictEqual(false);
+  expect(areUnique(["dog", "dog", "cat", "cat"]))
+    .toStrictEqual(false);
+  expect(areUnique(["rat", "dog", "fat", "cat"]))
+    .toStrictEqual(true);
+  expect(areUnique(["rat", "rat", "rat"]))
+    .toStrictEqual(false);
+  expect(areUnique(["rat"]))
+    .toStrictEqual(true);
+  expect(areUnique([]))
+    .toStrictEqual(true);
 });
