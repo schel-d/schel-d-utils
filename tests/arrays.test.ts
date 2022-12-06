@@ -1,4 +1,4 @@
-import { areUnique, range, repeat, unique } from "../src/_export";
+import { areUnique, arraysMatch, range, repeat, unique } from "../src/_export";
 
 test("range", () => {
   expect(range(0, 4)).toStrictEqual([0, 1, 2, 3]);
@@ -78,4 +78,99 @@ test("areUnique (primitive string)", () => {
     .toStrictEqual(true);
   expect(areUnique([]))
     .toStrictEqual(true);
+});
+
+test("arraysMatch (custom object)", () => {
+  const obj = (a: string) => { return { x: a }; };
+  const strEquals = (a: { x: string }, b: { x: string }) => a.x == b.x;
+
+  expect(arraysMatch(
+    [obj("cat"), obj("dog")],
+    [obj("cat"), obj("dog")],
+    strEquals
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    [obj("cat"), obj("dog")],
+    [obj("dog"), obj("cat")],
+    strEquals
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    [obj("cat"), obj("dog")],
+    [obj("dog"), obj("cat"), obj("cat")],
+    strEquals
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    [obj("cat"), obj("dog"), obj("dog")],
+    [obj("dog"), obj("cat")],
+    strEquals
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    [obj("cat"), obj("frog"), obj("dog")],
+    [obj("dog"), obj("cat")],
+    strEquals
+  )).toStrictEqual(false);
+
+  expect(arraysMatch(
+    [obj("cat"), obj("dog")],
+    [obj("dog"), obj("cat"), obj("frog")],
+    strEquals
+  )).toStrictEqual(false);
+
+  expect(arraysMatch(
+    [],
+    [],
+    strEquals
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    [obj("hello")],
+    [],
+    strEquals
+  )).toStrictEqual(false);
+});
+
+test("arraysMatch (primitive string)", () => {
+  expect(arraysMatch(
+    ["cat", "dog"],
+    ["cat", "dog"]
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    ["cat", "dog"],
+    ["dog", "cat"]
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    ["cat", "dog"],
+    ["dog", "cat", "cat"]
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    ["cat", "dog", "dog"],
+    ["dog", "cat"]
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    ["cat", "frog", "dog"],
+    ["dog", "cat"]
+  )).toStrictEqual(false);
+
+  expect(arraysMatch(
+    ["cat", "dog"],
+    ["dog", "cat", "frog"]
+  )).toStrictEqual(false);
+
+  expect(arraysMatch(
+    [],
+    []
+  )).toStrictEqual(true);
+
+  expect(arraysMatch(
+    ["hello"],
+    []
+  )).toStrictEqual(false);
 });
