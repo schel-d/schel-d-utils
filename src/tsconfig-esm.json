@@ -1,11 +1,11 @@
 {
   "include": ["./**/*"],
   "compilerOptions": {
-    "target": "ES2019",
+    "target": "ES2017",
     "esModuleInterop": true,
     "outDir": "../dist/esm/",
     "strict": true,
-    "lib": ["ES2019"],
+    "lib": ["ES2017"],
     "moduleResolution": "node",
     "declaration": true
   }
